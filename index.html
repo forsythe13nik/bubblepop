@@ -37,7 +37,6 @@
             z-index: 9999;
             transition: opacity 0.5s ease;
         }
-        /* Prevents pull-to-refresh and overscroll glow on mobile */
         html, body {
             overscroll-behavior-y: contain;
         }
@@ -45,14 +44,15 @@
 <script type="importmap">
 {
   "imports": {
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
     "react/": "https://esm.sh/react@^19.2.3/",
     "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.34.0"
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
 <body>
     <div id="loading-screen">
@@ -60,8 +60,11 @@
         <div class="text-blue-500 font-black text-2xl animate-pulse uppercase tracking-widest">Loading Game...</div>
     </div>
     <div id="root"></div>
+    
+    <!-- This line tells Vercel where your code starts -->
+    <script type="module" src="/index.tsx"></script>
+
     <script>
-        // Global error handler to help debug why the game might not be showing
         window.onerror = function(msg, url, lineNo, columnNo, error) {
             console.error('Error: ' + msg + '\nScript: ' + url + '\nLine: ' + lineNo);
             const loader = document.getElementById('loading-screen');
@@ -70,7 +73,6 @@
             }
             return false;
         };
-        // Remove loader when React mounts
         window.addEventListener('load', () => {
             const observer = new MutationObserver(() => {
                 if (document.getElementById('root').children.length > 0) {
@@ -83,6 +85,5 @@
             observer.observe(document.getElementById('root'), { childList: true });
         });
     </script>
-<script type="module" src="/index.tsx"></script>
 </body>
 </html>
